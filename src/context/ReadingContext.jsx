@@ -1,4 +1,5 @@
 import { createContext, useContext, useReducer, useEffect } from 'react';
+import { createTextChunks, calculateReadingProgress } from '../utils/textChunking';
 
 const ReadingContext = createContext();
 
@@ -6,9 +7,10 @@ const ReadingContext = createContext();
 const initialState = {
   // Session management
   currentSession: null,
-  currentPassageIndex: 0,
-  passages: [],
-  sessionProgress: 0,
+  currentPassage: null,
+  currentChunkIndex: 0,
+  chunks: [],
+  readingProgress: 0,
   
   // Display preferences
   fontSize: 20, // Larger default for mobile
@@ -32,9 +34,10 @@ const initialState = {
 const ACTIONS = {
   START_SESSION: 'START_SESSION',
   END_SESSION: 'END_SESSION',
-  NEXT_PASSAGE: 'NEXT_PASSAGE',
-  PREVIOUS_PASSAGE: 'PREVIOUS_PASSAGE',
-  GO_TO_PASSAGE: 'GO_TO_PASSAGE',
+  NEXT_CHUNK: 'NEXT_CHUNK',
+  PREVIOUS_CHUNK: 'PREVIOUS_CHUNK',
+  GO_TO_CHUNK: 'GO_TO_CHUNK',
+  REGENERATE_CHUNKS: 'REGENERATE_CHUNKS',
   
   // Display settings
   SET_FONT_SIZE: 'SET_FONT_SIZE',
@@ -55,18 +58,18 @@ const ACTIONS = {
 };
 
 // URL parameter utilities
-const updateUrlParams = (passageIndex, passageId) => {
+const updateUrlParams = (passageId, chunkIndex) => {
   const url = new URL(window.location);
-  url.searchParams.set('passage', passageIndex);
   url.searchParams.set('passageId', passageId);
+  url.searchParams.set('chunk', chunkIndex);
   window.history.replaceState({}, '', url);
 };
 
 const getUrlParams = () => {
   const url = new URL(window.location);
   return {
-    passage: parseInt(url.searchParams.get('passage')) || 0,
     passageId: parseInt(url.searchParams.get('passageId')) || null,
+    chunk: parseInt(url.searchParams.get('chunk')) || 0,
   };
 };
 
@@ -74,89 +77,138 @@ const getUrlParams = () => {
 function readingReducer(state, action) {
   switch (action.type) {
     case ACTIONS.START_SESSION:
-      const initialPassageIndex = action.payload.initialPassageIndex || 0;
-      const passages = action.payload.passages;
-      const currentPassage = passages[initialPassageIndex];
+      const passage = action.payload.passage;
+      const initialChunkIndex = action.payload.initialChunkIndex || 0;
       
-      // Update URL with initial passage
-      if (currentPassage) {
-        updateUrlParams(initialPassageIndex, currentPassage.id);
-      }
+      // Generate chunks based on current display settings
+      const chunks = createTextChunks(passage.text, {
+        fontSize: state.fontSize,
+        lineHeight: state.lineHeight,
+        columnView: state.columnView,
+      });
+      
+      const validChunkIndex = Math.min(initialChunkIndex, chunks.length - 1);
+      const progress = calculateReadingProgress(validChunkIndex, chunks.length);
+      
+      // Update URL with passage and chunk
+      updateUrlParams(passage.id, validChunkIndex);
       
       return {
         ...state,
         currentSession: {
           id: Date.now(),
           startTime: new Date(),
-          passages: passages,
-          difficulty: action.payload.difficulty,
+          passageId: passage.id,
         },
-        passages: passages,
-        currentPassageIndex: initialPassageIndex,
-        sessionProgress: ((initialPassageIndex + 1) / passages.length) * 100,
+        currentPassage: passage,
+        chunks: chunks,
+        currentChunkIndex: validChunkIndex,
+        readingProgress: progress,
       };
       
     case ACTIONS.END_SESSION:
       // Clear URL parameters when session ends
       const url = new URL(window.location);
-      url.searchParams.delete('passage');
       url.searchParams.delete('passageId');
+      url.searchParams.delete('chunk');
       window.history.replaceState({}, '', url);
       
       return {
         ...state,
         currentSession: null,
-        passages: [],
-        currentPassageIndex: 0,
-        sessionProgress: 0,
+        currentPassage: null,
+        chunks: [],
+        currentChunkIndex: 0,
+        readingProgress: 0,
       };
       
-    case ACTIONS.NEXT_PASSAGE:
-      const nextIndex = Math.min(state.currentPassageIndex + 1, state.passages.length - 1);
-      const nextPassage = state.passages[nextIndex];
+    case ACTIONS.NEXT_CHUNK:
+      const nextChunkIndex = Math.min(state.currentChunkIndex + 1, state.chunks.length - 1);
+      const nextProgress = calculateReadingProgress(nextChunkIndex, state.chunks.length);
       
-      if (nextPassage) {
-        updateUrlParams(nextIndex, nextPassage.id);
+      // Update URL
+      if (state.currentPassage) {
+        updateUrlParams(state.currentPassage.id, nextChunkIndex);
       }
       
       return {
         ...state,
-        currentPassageIndex: nextIndex,
-        sessionProgress: ((nextIndex + 1) / state.passages.length) * 100,
+        currentChunkIndex: nextChunkIndex,
+        readingProgress: nextProgress,
       };
       
-    case ACTIONS.PREVIOUS_PASSAGE:
-      const prevIndex = Math.max(state.currentPassageIndex - 1, 0);
-      const prevPassage = state.passages[prevIndex];
+    case ACTIONS.PREVIOUS_CHUNK:
+      const prevChunkIndex = Math.max(state.currentChunkIndex - 1, 0);
+      const prevProgress = calculateReadingProgress(prevChunkIndex, state.chunks.length);
       
-      if (prevPassage) {
-        updateUrlParams(prevIndex, prevPassage.id);
+      // Update URL
+      if (state.currentPassage) {
+        updateUrlParams(state.currentPassage.id, prevChunkIndex);
       }
       
       return {
         ...state,
-        currentPassageIndex: prevIndex,
-        sessionProgress: ((prevIndex + 1) / state.passages.length) * 100,
+        currentChunkIndex: prevChunkIndex,
+        readingProgress: prevProgress,
       };
       
-    case ACTIONS.GO_TO_PASSAGE:
-      const targetPassage = state.passages[action.payload];
+    case ACTIONS.GO_TO_CHUNK:
+      const targetChunkIndex = Math.max(0, Math.min(action.payload, state.chunks.length - 1));
+      const targetProgress = calculateReadingProgress(targetChunkIndex, state.chunks.length);
       
-      if (targetPassage) {
-        updateUrlParams(action.payload, targetPassage.id);
+      // Update URL
+      if (state.currentPassage) {
+        updateUrlParams(state.currentPassage.id, targetChunkIndex);
       }
       
       return {
         ...state,
-        currentPassageIndex: action.payload,
-        sessionProgress: ((action.payload + 1) / state.passages.length) * 100,
+        currentChunkIndex: targetChunkIndex,
+        readingProgress: targetProgress,
+      };
+      
+    case ACTIONS.REGENERATE_CHUNKS:
+      // Regenerate chunks when display settings change
+      if (!state.currentPassage) return state;
+      
+      const newChunks = createTextChunks(state.currentPassage.text, {
+        fontSize: state.fontSize,
+        lineHeight: state.lineHeight,
+        columnView: state.columnView,
+      });
+      
+      // Adjust current chunk index to maintain relative position
+      const currentWordPosition = state.chunks[state.currentChunkIndex]?.wordStart || 0;
+      let newChunkIndex = 0;
+      
+      for (let i = 0; i < newChunks.length; i++) {
+        if (newChunks[i].wordStart <= currentWordPosition && 
+            newChunks[i].wordEnd >= currentWordPosition) {
+          newChunkIndex = i;
+          break;
+        }
+      }
+      
+      const newProgress = calculateReadingProgress(newChunkIndex, newChunks.length);
+      
+      // Update URL
+      updateUrlParams(state.currentPassage.id, newChunkIndex);
+      
+      return {
+        ...state,
+        chunks: newChunks,
+        currentChunkIndex: newChunkIndex,
+        readingProgress: newProgress,
       };
       
     case ACTIONS.SET_FONT_SIZE:
-      return { ...state, fontSize: action.payload };
+      const newState1 = { ...state, fontSize: action.payload };
+      // Regenerate chunks if in session
+      return newState1;
       
     case ACTIONS.SET_LINE_HEIGHT:
-      return { ...state, lineHeight: action.payload };
+      const newState2 = { ...state, lineHeight: action.payload };
+      return newState2;
       
     case ACTIONS.SET_FONT_FAMILY:
       return { ...state, fontFamily: action.payload };
@@ -172,7 +224,8 @@ function readingReducer(state, action) {
       };
       
     case ACTIONS.TOGGLE_COLUMN_VIEW:
-      return { ...state, columnView: !state.columnView };
+      const newState3 = { ...state, columnView: !state.columnView };
+      return newState3;
       
     case ACTIONS.SET_CONTRAST:
       return { ...state, contrast: action.payload };
@@ -226,6 +279,13 @@ export function ReadingProvider({ children }) {
     localStorage.setItem('readingPreferences', JSON.stringify(preferences));
   }, [state.fontSize, state.lineHeight, state.fontFamily, state.darkMode, 
       state.columnView, state.contrast, state.scrollSpeed]);
+
+  // Regenerate chunks when display settings change during active session
+  useEffect(() => {
+    if (state.currentSession && state.currentPassage) {
+      dispatch({ type: ACTIONS.REGENERATE_CHUNKS });
+    }
+  }, [state.fontSize, state.lineHeight, state.columnView]);
   
   const value = {
     state,

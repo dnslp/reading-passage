@@ -1,20 +1,20 @@
 import { useState, useEffect } from 'react';
-import { passages, getPassagesByDifficulty, getTotalWordCount } from '../data/passages';
+import { passages, getPassagesByDifficulty } from '../data/passages';
 import { useReading, getUrlParams } from '../context/ReadingContext';
+import { getReadingTimeEstimate } from '../utils/textChunking';
 
 function PassageSelector() {
   const { dispatch, actions } = useReading();
   const [selectedDifficulty, setSelectedDifficulty] = useState('all');
-  const [selectedPassages, setSelectedPassages] = useState([]);
+  const [selectedPassageId, setSelectedPassageId] = useState(null);
 
   const difficulties = ['all', 'beginner', 'intermediate', 'advanced'];
 
-  // Check for URL parameters on mount to pre-select passages
+  // Check for URL parameters on mount to pre-select passage
   useEffect(() => {
     const urlParams = getUrlParams();
     if (urlParams.passageId) {
-      // If there's a specific passage in URL, select it
-      setSelectedPassages([urlParams.passageId]);
+      setSelectedPassageId(urlParams.passageId);
     }
   }, []);
   
@@ -23,49 +23,29 @@ function PassageSelector() {
     return getPassagesByDifficulty(selectedDifficulty);
   };
 
-  const handlePassageToggle = (passageId) => {
-    setSelectedPassages(prev => 
-      prev.includes(passageId)
-        ? prev.filter(id => id !== passageId)
-        : [...prev, passageId]
-    );
-  };
-
-  const handleSelectAll = () => {
-    const filteredPassages = getFilteredPassages();
-    const allIds = filteredPassages.map(p => p.id);
-    setSelectedPassages(
-      selectedPassages.length === allIds.length ? [] : allIds
-    );
+  const handlePassageSelect = (passageId) => {
+    setSelectedPassageId(passageId === selectedPassageId ? null : passageId);
   };
 
   const startSession = () => {
-    const sessionPassages = passages.filter(p => selectedPassages.includes(p.id));
-    const urlParams = getUrlParams();
+    const selectedPassage = passages.find(p => p.id === selectedPassageId);
+    if (!selectedPassage) return;
     
-    // Find initial passage index from URL parameters
-    let initialPassageIndex = 0;
-    if (urlParams.passageId) {
-      const foundIndex = sessionPassages.findIndex(p => p.id === urlParams.passageId);
-      if (foundIndex !== -1) {
-        initialPassageIndex = foundIndex;
-      }
-    }
+    const urlParams = getUrlParams();
+    const initialChunkIndex = urlParams.chunk || 0;
     
     dispatch({
       type: actions.START_SESSION,
       payload: {
-        passages: sessionPassages,
-        difficulty: selectedDifficulty,
-        initialPassageIndex: initialPassageIndex,
+        passage: selectedPassage,
+        initialChunkIndex: initialChunkIndex,
       },
     });
   };
 
   const filteredPassages = getFilteredPassages();
-  const selectedPassageData = passages.filter(p => selectedPassages.includes(p.id));
-  const totalWords = getTotalWordCount(selectedPassageData);
-  const estimatedTime = Math.ceil(totalWords / 150); // Assuming 150 words per minute
+  const selectedPassage = passages.find(p => p.id === selectedPassageId);
+  const timeEstimate = selectedPassage ? getReadingTimeEstimate(selectedPassage.wordCount) : null;
 
   return (
     <div className="passage-selector">
@@ -91,12 +71,6 @@ function PassageSelector() {
 
       <div className="passage-list">
         <div className="list-controls">
-          <button 
-            onClick={handleSelectAll}
-            className="select-all-btn"
-          >
-            {selectedPassages.length === filteredPassages.length ? 'Deselect All' : 'Select All'}
-          </button>
           <span className="passage-count">
             {filteredPassages.length} passages available
           </span>
@@ -105,54 +79,51 @@ function PassageSelector() {
         {filteredPassages.map(passage => (
           <div 
             key={passage.id} 
-            className={`passage-item ${selectedPassages.includes(passage.id) ? 'selected' : ''}`}
+            className={`passage-item ${selectedPassageId === passage.id ? 'selected' : ''}`}
+            onClick={() => handlePassageSelect(passage.id)}
           >
-            <input
-              type="checkbox"
-              id={`passage-${passage.id}`}
-              checked={selectedPassages.includes(passage.id)}
-              onChange={() => handlePassageToggle(passage.id)}
-              className="passage-checkbox"
-            />
-            <label htmlFor={`passage-${passage.id}`} className="passage-label">
-              <div className="passage-info">
-                <h3 className="passage-title">{passage.title}</h3>
-                <div className="passage-meta">
-                  <span className={`difficulty-badge ${passage.difficulty}`}>
-                    {passage.difficulty}
-                  </span>
-                  <span className="word-count">{passage.wordCount} words</span>
-                </div>
-                <p className="passage-preview">
-                  {passage.text.substring(0, 120)}...
-                </p>
+            <div className="passage-info">
+              <h3 className="passage-title">{passage.title}</h3>
+              <div className="passage-meta">
+                <span className={`difficulty-badge ${passage.difficulty}`}>
+                  {passage.difficulty}
+                </span>
+                <span className="word-count">{passage.wordCount} words</span>
+                <span className="reading-time">
+                  ~{getReadingTimeEstimate(passage.wordCount).display}
+                </span>
               </div>
-            </label>
+              <p className="passage-preview">
+                {passage.text.substring(0, 120)}...
+              </p>
+            </div>
+            {selectedPassageId === passage.id && (
+              <div className="selection-indicator">✓</div>
+            )}
           </div>
         ))}
       </div>
 
-      {selectedPassages.length > 0 && (
+      {selectedPassage && (
         <div className="session-summary">
-          <div className="summary-stats">
-            <div className="stat">
-              <span className="stat-label">Selected Passages:</span>
-              <span className="stat-value">{selectedPassages.length}</span>
-            </div>
-            <div className="stat">
-              <span className="stat-label">Total Words:</span>
-              <span className="stat-value">{totalWords}</span>
-            </div>
-            <div className="stat">
-              <span className="stat-label">Estimated Time:</span>
-              <span className="stat-value">{estimatedTime} min</span>
+          <div className="selected-passage-info">
+            <h3>Selected Passage:</h3>
+            <div className="passage-details">
+              <span className="passage-name">{selectedPassage.title}</span>
+              <div className="passage-stats">
+                <span className={`difficulty-badge ${selectedPassage.difficulty}`}>
+                  {selectedPassage.difficulty}
+                </span>
+                <span>{selectedPassage.wordCount} words</span>
+                <span>~{timeEstimate.display} reading time</span>
+              </div>
             </div>
           </div>
           <button 
             onClick={startSession}
             className="start-session-btn"
           >
-            Start Reading Session
+            Start Reading
           </button>
         </div>
       )}

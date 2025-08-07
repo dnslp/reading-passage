@@ -17,7 +17,7 @@ function AppContent() {
     window.location.reload();
   };
 
-  if (currentSession && currentSession.passages.length > 0) {
+  if (currentSession ) {
     // Session is active, show reading interface
     return (
       <>
@@ -34,7 +34,6 @@ function AppContent() {
   return (
     <div className={`app ${darkMode ? 'dark' : ''}`}>
       <nav className="navbar">
-        <h1>📚 Reading Passage Recorder</h1>
         <div className="nav-controls">
           <button 
             onClick={() => setShowSettings(true)}
@@ -55,17 +54,7 @@ function AppContent() {
       
       <main className="main-content">
         <div className="app-intro">
-          <h2>Mobile Reading Practice</h2>
-          <p>
-            Select passages for reading practice. Optimized for mobile with 
-            touch navigation, customizable display, and teleprompter-style scrolling.
-          </p>
-          <div className="features-list">
-            <div className="feature">📱 Mobile-first touch interface</div>
-            <div className="feature">✨ Auto-scroll teleprompter mode</div>
-            <div className="feature">🎨 Customizable fonts & themes</div>
-            <div className="feature">🔗 URL-based passage tracking</div>
-          </div>
+
         </div>
         
         <PassageSelector />

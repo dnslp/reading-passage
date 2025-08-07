@@ -8,7 +8,7 @@ function NavigationControls({
   onEndSession 
 }) {
   const { state, dispatch, actions } = useReading();
-  const { autoScroll, focusMode, scrollSpeed, passages, currentPassageIndex } = state;
+  const { autoScroll, focusMode, scrollSpeed, chunks, currentChunkIndex, currentPassage, readingProgress } = state;
 
   const toggleAutoScroll = () => {
     dispatch({ type: actions.TOGGLE_AUTO_SCROLL });
@@ -25,15 +25,17 @@ function NavigationControls({
     });
   };
 
+  if (!currentPassage || !chunks.length) return null;
+
   return (
     <div className="navigation-controls">
-      {/* Passage counter - prominent on mobile */}
-      <div className="passage-progress">
-        <span className="passage-counter">
-          {currentPassageIndex + 1} of {passages.length}
+      {/* Chunk progress - prominent on mobile */}
+      <div className="chunk-progress">
+        <span className="chunk-counter">
+          Part {currentChunkIndex + 1} of {chunks.length}
         </span>
-        <div className="passage-title-small">
-          {passages[currentPassageIndex]?.title}
+        <div className="progress-summary">
+          {readingProgress}% of "{currentPassage.title}"
         </div>
       </div>
 
@@ -43,7 +45,7 @@ function NavigationControls({
           onClick={onPrevious}
           disabled={!canGoBack}
           className="nav-btn prev"
-          title="Previous passage"
+          title="Previous part"
         >
           ← Previous
         </button>
@@ -52,7 +54,7 @@ function NavigationControls({
           onClick={onNext}
           disabled={!canGoNext}
           className="nav-btn next"
-          title="Next passage"
+          title="Next part"
         >
           Next →
         </button>

@@ -11,9 +11,10 @@ function ReadingInterface() {
   const [touchEnd, setTouchEnd] = useState(null);
   
   const { 
-    passages, 
-    currentPassageIndex, 
-    sessionProgress, 
+    chunks,
+    currentChunkIndex, 
+    currentPassage,
+    readingProgress, 
     showControls, 
     focusMode,
     autoScroll,
@@ -21,9 +22,9 @@ function ReadingInterface() {
     darkMode,
   } = state;
 
-  const currentPassage = passages[currentPassageIndex];
-  const isFirstPassage = currentPassageIndex === 0;
-  const isLastPassage = currentPassageIndex === passages.length - 1;
+  const currentChunk = chunks[currentChunkIndex];
+  const isFirstChunk = currentChunkIndex === 0;
+  const isLastChunk = currentChunkIndex === chunks.length - 1;
 
   // Auto-scroll functionality
   useEffect(() => {
@@ -37,9 +38,9 @@ function ReadingInterface() {
         // Check if we've reached the bottom
         const { scrollTop, scrollHeight, clientHeight } = readingAreaRef.current;
         if (scrollTop + clientHeight >= scrollHeight - 10) {
-          // Auto-advance to next passage if available
-          if (!isLastPassage) {
-            handleNextPassage();
+          // Auto-advance to next chunk if available
+          if (!isLastChunk) {
+            handleNextChunk();
           } else {
             dispatch({ type: actions.TOGGLE_AUTO_SCROLL });
           }
@@ -48,7 +49,22 @@ function ReadingInterface() {
     }, scrollSpeed_ms);
 
     return () => clearInterval(interval);
-  }, [autoScroll, scrollSpeed, isLastPassage, dispatch, actions]);
+  }, [autoScroll, scrollSpeed, isLastChunk, currentChunkIndex, dispatch, actions]);
+  
+  // Define navigation handlers
+  const handleNextChunk = () => {
+    dispatch({ type: actions.NEXT_CHUNK });
+    if (readingAreaRef.current) {
+      readingAreaRef.current.scrollTop = 0;
+    }
+  };
+
+  const handlePreviousChunk = () => {
+    dispatch({ type: actions.PREVIOUS_CHUNK });
+    if (readingAreaRef.current) {
+      readingAreaRef.current.scrollTop = 0;
+    }
+  };
 
   // Touch gesture handling
   const handleTouchStart = (e) => {
@@ -67,11 +83,11 @@ function ReadingInterface() {
     const isLeftSwipe = distance > 50;
     const isRightSwipe = distance < -50;
 
-    if (isLeftSwipe && !isLastPassage) {
-      handleNextPassage();
+    if (isLeftSwipe && !isLastChunk) {
+      handleNextChunk();
     }
-    if (isRightSwipe && !isFirstPassage) {
-      handlePreviousPassage();
+    if (isRightSwipe && !isFirstChunk) {
+      handlePreviousChunk();
     }
   };
 
@@ -86,24 +102,10 @@ function ReadingInterface() {
     const tapX = e.clientX - rect.left;
     const centerX = rect.width / 2;
 
-    if (tapX > centerX && !isLastPassage) {
-      handleNextPassage();
-    } else if (tapX <= centerX && !isFirstPassage) {
-      handlePreviousPassage();
-    }
-  };
-
-  const handleNextPassage = () => {
-    dispatch({ type: actions.NEXT_PASSAGE });
-    if (readingAreaRef.current) {
-      readingAreaRef.current.scrollTop = 0;
-    }
-  };
-
-  const handlePreviousPassage = () => {
-    dispatch({ type: actions.PREVIOUS_PASSAGE });
-    if (readingAreaRef.current) {
-      readingAreaRef.current.scrollTop = 0;
+    if (tapX > centerX && !isLastChunk) {
+      handleNextChunk();
+    } else if (tapX <= centerX && !isFirstChunk) {
+      handlePreviousChunk();
     }
   };
 
@@ -111,7 +113,7 @@ function ReadingInterface() {
     dispatch({ type: actions.END_SESSION });
   };
 
-  if (!currentPassage) {
+  if (!currentPassage || !currentChunk) {
     return <div>Loading...</div>;
   }
 
@@ -136,24 +138,24 @@ function ReadingInterface() {
                   <span className={`difficulty-badge ${currentPassage.difficulty}`}>
                     {currentPassage.difficulty}
                   </span>
-                  <span className="passage-counter">
-                    Passage {currentPassageIndex + 1} of {passages.length}
+                  <span className="chunk-counter">
+                    Part {currentChunkIndex + 1} of {chunks.length}
                   </span>
                 </div>
               </>
             )}
           </div>
           
-          <ReadingText text={currentPassage.text} />
+          <ReadingText text={currentChunk.text} />
         </div>
 
         {!focusMode && showControls && (
           <div className="controls-container">
             <NavigationControls
-              onPrevious={handlePreviousPassage}
-              onNext={handleNextPassage}
-              canGoBack={!isFirstPassage}
-              canGoNext={!isLastPassage}
+              onPrevious={handlePreviousChunk}
+              onNext={handleNextChunk}
+              canGoBack={!isFirstChunk}
+              canGoNext={!isLastChunk}
               onEndSession={handleEndSession}
             />
           </div>
@@ -163,7 +165,7 @@ function ReadingInterface() {
       {!focusMode && (
         <div className="reading-instructions">
           <p>
-            <strong>Navigation:</strong> Swipe left/right or tap sides to navigate • 
+            <strong>Navigation:</strong> Swipe left/right or tap sides to navigate between parts • 
             Tap center in focus mode to show controls
           </p>
         </div>
