@@ -45,10 +45,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0rem 0rem;
+  padding: 1rem;
   background-color: var(--background-secondary);
   border-bottom: 1px solid var(--border);
   box-shadow: 0 2px 4px var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .navbar h1 {
@@ -86,6 +89,7 @@
   margin: 0 auto;
   padding: 0;
   width: 100%;
+  padding-top: 4rem;
 }
 
 .app-intro {

@@ -39,6 +39,7 @@ function AppContent() {
             onClick={() => setShowSettings(true)}
             className="nav-btn settings-btn"
             title="Display Settings"
+            aria-label="Open display settings"
           >
             ⚙️ Settings
           </button>
@@ -46,6 +47,7 @@ function AppContent() {
             onClick={() => setShowAbout(true)}
             className="nav-btn about-btn"
             title="About this app"
+            aria-label="Show information about this application"
           >
             ℹ️ About
           </button>
