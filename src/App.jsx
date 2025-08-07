@@ -5,7 +5,7 @@ import About from './components/About'
 
 function App() {
   return (
-    <Router basename="/reading-passage">
+    <Router basename={import.meta.env.PROD ? "/reading-passage" : ""}>
       <div className="app">
         <nav className="navbar">
           <h1>Reading Passage</h1>
