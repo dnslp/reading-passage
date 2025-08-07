@@ -135,12 +135,12 @@ function ReadingInterface() {
               <>
                 <h2 className="passage-title">{currentPassage.title}</h2>
                 <div className="passage-meta">
-                  <span className={`difficulty-badge ${currentPassage.difficulty}`}>
+                  {/* <span className={`difficulty-badge ${currentPassage.difficulty}`}>
                     {currentPassage.difficulty}
-                  </span>
-                  <span className="chunk-counter">
+                  </span> */}
+                  {/* <span className="chunk-counter">
                     Part {currentChunkIndex + 1} of {chunks.length}
-                  </span>
+                  </span> */}
                 </div>
               </>
             )}

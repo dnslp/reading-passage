@@ -1,50 +1,123 @@
-// Sample reading passages for the app
+// passages.js
+
+// Helper to compute word count from a text string
+function getWordCount(text) {
+  // Split on any whitespace and filter out empty strings
+  return text
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .length;
+}
+
+// Your five phonetically balanced passages
 export const passages = [
   {
-    id: 1,
-    title: "The Rainbow Fish",
-    difficulty: "beginner",
-    wordCount: 150,
-    text: "A long way out in the deep blue sea there lived a fish. Not just an ordinary fish, but the most beautiful fish in the entire ocean. His scales were every shade of blue and green and purple, with sparkling silver scales among them. The other fish were amazed at his beauty. They called him Rainbow Fish. 'Come on, Rainbow Fish,' they would call. 'Come and play with us!' But the Rainbow Fish would just glide past, proud and silent, letting his scales shimmer. He was too proud to answer. One day, a little blue fish followed behind him. 'Rainbow Fish,' he called, 'wait for me! Please give me one of your shiny scales. They are so wonderful, and you have so many.' 'Who do you think you are?' cried the Rainbow Fish. 'Get away from me!' Shocked, the little blue fish swam away."
+    id: "rainbows-and-light",
+    title: "Rainbows and Light",
+    text: `When the sunlight strikes raindrops in the air, they act as a prism and form a rainbow. The rainbow is a division of white light into many beautiful colors. These take the shape of a long round arch, with its path high above, and its two ends apparently beyond the horizon.
+
+There is, according to legend, a boiling pot of gold at one end. People look, but no one ever finds it. When a man looks for something beyond his reach, his friends say he is looking for the pot of gold at the end of the rainbow. Throughout the centuries people have explained the rainbow in various ways. Some have accepted it as a miracle without physical explanation. To the Hebrews it was a token that there would be no more universal floods.
+
+The Greeks used to imagine that it was a sign from the gods to foretell war or heavy rain. The Norsemen considered the rainbow as a bridge over which the gods passed from earth to their home in the sky. Others have tried to explain the phenomenon physically. Aristotle thought that the rainbow was caused by reflection of the sun's rays by the rain. Since then physicists have found that it is not reflection, but refraction by the raindrops which causes the rainbows.`,
+    skillFocus: "Clarity",
+    tags: ["intake", "phonetically-balanced", "f0"],
+    difficulty: "all",
+    wordCount: getWordCount(`When the sunlight strikes raindrops in the air, they act as a prism and form a rainbow. The rainbow is a division of white light into many beautiful colors. These take the shape of a long round arch, with its path high above, and its two ends apparently beyond the horizon.
+
+There is, according to legend, a boiling pot of gold at one end. People look, but no one ever finds it. When a man looks for something beyond his reach, his friends say he is looking for the pot of gold at the end of the rainbow. Throughout the centuries people have explained the rainbow in various ways. Some have accepted it as a miracle without physical explanation. To the Hebrews it was a token that there would be no more universal floods.
+
+The Greeks used to imagine that it was a sign from the gods to foretell war or heavy rain. The Norsemen considered the rainbow as a bridge over which the gods passed from earth to their home in the sky. Others have tried to explain the phenomenon physically. Aristotle thought that the rainbow was caused by reflection of the sun's rays by the rain. Since then physicists have found that it is not reflection, but refraction by the raindrops which causes the rainbows.`)
   },
   {
-    id: 2,
-    title: "The Science of Stars",
-    difficulty: "intermediate",
-    wordCount: 200,
-    text: "Stars are massive, luminous spheres of plasma held together by their own gravity. The nearest star to Earth is the Sun, which is the source of most of the energy on the planet. Other stars are visible from Earth during the night, appearing as a multitude of fixed luminous points in the sky due to their immense distance from Earth. Historically, the most prominent stars were grouped into constellations and asterisms, and the brightest stars gained proper names. Astronomers have assembled star catalogues that identify the known stars and provide standardized stellar designations. The observable universe contains an estimated 10^24 stars, but most are invisible to the naked eye from Earth, including all individual stars outside our galaxy, the Milky Way. A star's life begins with the gravitational collapse of a gaseous nebula of material composed primarily of hydrogen, along with helium and trace amounts of heavier elements."
+    id: "moons-mysteries",
+    title: "The Moon’s Mysteries",
+    text: `The moon, a celestial beacon, has fascinated humanity since time immemorial. Its pale, luminous glow casts a serene light across the night sky, influencing tides and inspiring countless myths and legends. As it orbits the Earth, the moon goes through phases, from the slender crescent to the full, round brilliance that illuminates the darkness.
+
+In ancient times, civilizations built their calendars around the lunar cycle, tracking the passage of months by observing its changes. Astronomers and poets alike have gazed at the moon, finding inspiration in its ever-changing face. The surface of the moon, marked by craters and ancient volcanic plains, tells the story of its turbulent past.
+
+During a total lunar eclipse, the moon takes on a reddish hue, earning the nickname "blood moon." This phenomenon occurs when the Earth comes between the sun and the moon, casting a shadow that transforms its usual silvery appearance. The moon landings of the 20th century brought this distant world closer, as astronauts set foot on its barren landscape and brought back samples for study.
+
+Legends speak of moon goddesses and mythical creatures that inhabit this glowing orb. The moon continues to be a source of wonder, its silent presence a reminder of the vastness and mystery of the universe. Whether observed through a telescope or admired with the naked eye, the moon remains a symbol of beauty and enigma.`,
+    skillFocus: "Storytelling",
+    tags: ["intake", "phonetically-balanced", "f0"],
+    difficulty: "all",
+    wordCount: getWordCount(`The moon, a celestial beacon, has fascinated humanity since time immemorial. Its pale, luminous glow casts a serene light across the night sky, influencing tides and inspiring countless myths and legends. As it orbits the Earth, the moon goes through phases, from the slender crescent to the full, round brilliance that illuminates the darkness.
+
+In ancient times, civilizations built their calendars around the lunar cycle, tracking the passage of months by observing its changes. Astronomers and poets alike have gazed at the moon, finding inspiration in its ever-changing face. The surface of the moon, marked by craters and ancient volcanic plains, tells the story of its turbulent past.
+
+During a total lunar eclipse, the moon takes on a reddish hue, earning the nickname "blood moon." This phenomenon occurs when the Earth comes between the sun and the moon, casting a shadow that transforms its usual silvery appearance. The moon landings of the 20th century brought this distant world closer, as astronauts set foot on its barren landscape and brought back samples for study.
+
+Legends speak of moon goddesses and mythical creatures that inhabit this glowing orb. The moon continues to be a source of wonder, its silent presence a reminder of the vastness and mystery of the universe. Whether observed through a telescope or admired with the naked eye, the moon remains a symbol of beauty and enigma.`)
   },
   {
-    id: 3,
-    title: "Climate Change and Ocean Currents",
-    difficulty: "advanced",
-    wordCount: 250,
-    text: "Ocean currents play a crucial role in regulating Earth's climate by transporting heat from equatorial regions toward the poles. The thermohaline circulation, often called the global conveyor belt, is driven by differences in water density caused by variations in temperature and salinity. Warm, less dense water rises to the surface and flows poleward, while cold, dense water sinks and flows toward the equator at depth. This circulation pattern helps moderate global temperatures and influences weather patterns worldwide. However, climate change is disrupting these critical ocean currents in unprecedented ways. As global temperatures rise, polar ice caps melt, introducing large volumes of fresh water into the ocean. This influx of fresh water reduces the salinity and density of seawater, potentially slowing or even stopping the sinking of cold water that drives the thermohaline circulation. Scientists have observed a significant slowdown in the Atlantic Meridional Overturning Circulation, which could have far-reaching consequences for global climate patterns, including more extreme weather events and shifts in precipitation patterns."
+    id: "art-of-bread",
+    title: "The Art of Bread",
+    text: `Baking bread is an ancient craft, cherished across cultures and generations. First, gather your ingredients: flour, yeast, salt, and water. Mix them gently until a soft dough forms. Knead it thoroughly, pressing and folding, feeling it transform beneath your hands. As it rises, it doubles in size, the yeast working its magic, creating pockets of air that will give the bread its soft, airy texture.
+
+Shape the dough into a loaf, then let it rise again, covering it with a damp cloth. Preheat your oven, a necessary step to transform the dough into golden perfection. The scent of baking bread fills the kitchen, a comforting aroma that promises warmth and nourishment. When the crust is golden and firm, remove the loaf and let it cool, resisting the temptation to slice it too soon.
+
+The first bite of fresh, homemade bread is a delight, the crust crisp and the interior soft and warm. Each slice carries the essence of the baker's skill and patience, a testament to the timeless art of bread-making.`,
+    skillFocus: "Warmth",
+    tags: ["intake", "phonetically-balanced", "f0"],
+    difficulty: "all",
+    wordCount: getWordCount(`Baking bread is an ancient craft, cherished across cultures and generations. First, gather your ingredients: flour, yeast, salt, and water. Mix them gently until a soft dough forms. Knead it thoroughly, pressing and folding, feeling it transform beneath your hands. As it rises, it doubles in size, the yeast working its magic, creating pockets of air that will give the bread its soft, airy texture.
+
+Shape the dough into a loaf, then let it rise again, covering it with a damp cloth. Preheat your oven, a necessary step to transform the dough into golden perfection. The scent of baking bread fills the kitchen, a comforting aroma that promises warmth and nourishment. When the crust is golden and firm, remove the loaf and let it cool, resisting the temptation to slice it too soon.
+
+The first bite of fresh, homemade bread is a delight, the crust crisp and the interior soft and warm. Each slice carries the essence of the baker's skill and patience, a testament to the timeless art of bread-making.`)
   },
   {
-    id: 4,
-    title: "The Art of Mindfulness",
-    difficulty: "intermediate",
-    wordCount: 180,
-    text: "Mindfulness is the practice of purposeful, nonjudgmental awareness of the present moment. It involves paying attention to thoughts, feelings, bodily sensations, and surrounding environment with openness and acceptance. This ancient practice, rooted in Buddhist meditation traditions, has gained widespread recognition in Western psychology and medicine for its mental health benefits. Regular mindfulness practice can reduce stress, anxiety, and depression while improving focus, emotional regulation, and overall well-being. The core principle of mindfulness is observing experiences without immediately reacting or trying to change them. When practicing mindfulness, individuals learn to notice when their mind wanders and gently redirect attention back to the present moment. This can be done through various techniques such as breathing exercises, body scans, or mindful walking. Research has shown that consistent mindfulness practice can actually change brain structure, increasing gray matter in areas associated with learning, memory, and emotional regulation while reducing activity in the amygdala, the brain's fear center."
+    id: "dragons-myths-legends",
+    title: "Dragons: Myths & Legends",
+    text: `Dragons, majestic and mythical, have captivated imaginations for centuries. These legendary creatures, with scales that shimmer in the sunlight, wings that span the sky, and fiery breath, are both feared and revered. In tales of old, dragons guarded vast treasures, their lairs hidden in mountains or deep within enchanted forests.
+
+Heroes and knights sought to challenge these beasts, embarking on quests filled with peril. The roar of a dragon could beHeard for miles, a sound that struck fear into the hearts of villagers. Yet, not all dragons were foes; some were wise and noble, bestowing knowledge and gifts upon those deemed worthy.
+
+Their eyes, often described as piercing and intelligent, seemed to hold the secrets of the ages. The bond between dragon and rider, in some stories, was one of deep trust and mutual respect. These partnerships, though rare, led to epic adventures and the forging of unbreakable alliances.
+
+In modern fantasy, dragons continue to soar across the pages of books and screens of movies, their legacy enduring. They symbolize power, wisdom, and mystery, a testament to the enduring allure of these magnificent creatures.`,
+    skillFocus: "Authority",
+    tags: ["intake", "phonetically-balanced", "f0"],
+    difficulty: "all",
+    wordCount: getWordCount(`Dragons, majestic and mythical, have captivated imaginations for centuries. These legendary creatures, with scales that shimmer in the sunlight, wings that span the sky, and fiery breath, are both feared and revered. In tales of old, dragons guarded vast treasures, their lairs hidden in mountains or deep within enchanted forests.
+
+Heroes and knights sought to challenge these beasts, embarking on quests filled with peril. The roar of a dragon could beHeard for miles, a sound that struck fear into the hearts of villagers. Yet, not all dragons were foes; some were wise and noble, bestowing knowledge and gifts upon those deemed worthy.
+
+Their eyes, often described as piercing and intelligent, seemed to hold the secrets of the ages. The bond between dragon and rider, in some stories, was one of deep trust and mutual respect. These partnerships, though rare, led to epic adventures and the forging of unbreakable alliances.
+
+In modern fantasy, dragons continue to soar across the pages of books and screens of movies, their legacy enduring. They symbolize power, wisdom, and mystery, a testament to the enduring allure of these magnificent creatures.`)
   },
   {
-    id: 5,
-    title: "The Mystery of Black Holes",
-    difficulty: "advanced",
-    wordCount: 300,
-    text: "Black holes are among the most fascinating and mysterious objects in the universe. These regions of spacetime exhibit gravitational effects so strong that nothing, not even light, can escape once it crosses the event horizon - the point of no return surrounding a black hole. The concept was first theorized in the 18th century, but it wasn't until Einstein's theory of general relativity that scientists began to understand how such objects could exist. Black holes form when massive stars, typically those with more than 20 times the mass of our Sun, reach the end of their lives and collapse under their own gravity. The core collapses into a singularity - a point of theoretically infinite density where the laws of physics as we know them break down. Surrounding this singularity is the event horizon, whose size depends on the black hole's mass. Supermassive black holes, containing millions or billions of times the mass of the Sun, are thought to exist at the centers of most galaxies, including our own Milky Way. These cosmic giants play a crucial role in galaxy formation and evolution. Despite their name, black holes aren't completely black. Stephen Hawking showed that they emit radiation due to quantum effects near the event horizon, causing them to slowly evaporate over time. This Hawking radiation is incredibly faint for stellar-mass black holes but becomes more significant for smaller ones."
+    id: "words-of-centering",
+    title: "Words of Centering",
+    text: `Take a deep breath and notice the air filling your lungs. Let your shoulders relax as you exhale slowly. Remind yourself: I am safe, I am present, and I am enough. My thoughts are gentle, and my mind is calm.
+
+I choose to treat myself with kindness and patience. When challenges appear, I meet them with steady courage. Each moment offers a fresh start—a chance to learn, to grow, and to let go of worry.
+
+I notice the sounds around me and feel my feet on the ground. I am grounded, focused, and ready for what comes next. With every breath, I return to this moment, reminding myself that peace begins within me.`,
+    skillFocus: "Centering",
+    tags: ["intake", "phonetically-balanced", "f0", "self-talk", "mindfulness"],
+    difficulty: "all",
+    wordCount: getWordCount(`Take a deep breath and notice the air filling your lungs. Let your shoulders relax as you exhale slowly. Remind yourself: I am safe, I am present, and I am enough. My thoughts are gentle, and my mind is calm.
+
+I choose to treat myself with kindness and patience. When challenges appear, I meet them with steady courage. Each moment offers a fresh start—a chance to learn, to grow, and to let go of worry.
+
+I notice the sounds around me and feel my feet on the ground. I am grounded, focused, and ready for what comes next. With every breath, I return to this moment, reminding myself that peace begins within me.`)
   }
 ];
 
-export const getPassagesByDifficulty = (difficulty) => {
-  return passages.filter(passage => passage.difficulty === difficulty);
-};
+// Helper exports for filtering and lookup
+export function getPassagesByDifficulty(difficulty) {
+  return difficulty === 'all'
+    ? passages
+    : passages.filter(p => p.difficulty === difficulty);
+}
 
-export const getPassageById = (id) => {
-  return passages.find(passage => passage.id === id);
-};
+export function getPassageById(id) {
+  return passages.find(p => p.id === id);
+}
 
-export const getTotalWordCount = (passageList) => {
-  return passageList.reduce((total, passage) => total + passage.wordCount, 0);
-};
+export function getTotalWordCount(list) {
+  return list.reduce((sum, p) => sum + p.wordCount, 0);
+}
