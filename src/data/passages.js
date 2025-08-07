@@ -108,10 +108,14 @@ I notice the sounds around me and feel my feet on the ground. I am grounded, foc
 ];
 
 // Helper exports for filtering and lookup
-export function getPassagesByDifficulty(difficulty) {
-  return difficulty === 'all'
-    ? passages
-    : passages.filter(p => p.difficulty === difficulty);
+export function getPassagesByTag(tag) {
+  if (!tag || tag === 'all') return passages;
+  return passages.filter(p => p.tags.includes(tag));
+}
+
+export function getUniqueTags() {
+  const allTags = passages.flatMap(p => p.tags);
+  return ['all', ...new Set(allTags)];
 }
 
 export function getPassageById(id) {

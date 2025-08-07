@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
-import { passages, getPassagesByDifficulty } from '../data/passages';
+import { passages, getPassagesByTag, getUniqueTags } from '../data/passages';
 import { useReading, getUrlParams } from '../context/ReadingContext';
 import { getReadingTimeEstimate } from '../utils/textChunking';
 
 function PassageSelector() {
   const { dispatch, actions } = useReading();
-  const [selectedDifficulty, setSelectedDifficulty] = useState('all');
+  const [selectedTag, setSelectedTag] = useState('all');
   const [selectedPassageId, setSelectedPassageId] = useState(null);
 
-  const difficulties = ['all', 'beginner', 'intermediate', 'advanced'];
+  const tags = getUniqueTags();
 
   // Check for URL parameters on mount to pre-select passage
   useEffect(() => {
@@ -19,8 +19,7 @@ function PassageSelector() {
   }, []);
   
   const getFilteredPassages = () => {
-    if (selectedDifficulty === 'all') return passages;
-    return getPassagesByDifficulty(selectedDifficulty);
+    return getPassagesByTag(selectedTag);
   };
 
   const handlePassageSelect = (passageId) => {
@@ -54,19 +53,22 @@ function PassageSelector() {
         <p>Choose the passages you want to practice reading</p>
       </div>
 
-      <div className="difficulty-filter">
-        <label>Filter by difficulty:</label>
-        <select 
-          value={selectedDifficulty} 
-          onChange={(e) => setSelectedDifficulty(e.target.value)}
-          className="difficulty-select"
-        >
-          {difficulties.map(diff => (
-            <option key={diff} value={diff}>
-              {diff === 'all' ? 'All Levels' : diff.charAt(0).toUpperCase() + diff.slice(1)}
-            </option>
-          ))}
-        </select>
+      <div className="filter-controls">
+        <div className="filter-group">
+          <label htmlFor="tag-filter">Filter by Tag:</label>
+          <select
+            id="tag-filter"
+            value={selectedTag}
+            onChange={(e) => setSelectedTag(e.target.value)}
+            className="tag-select"
+          >
+            {tags.map(tag => (
+              <option key={tag} value={tag}>
+                {tag === 'all' ? 'All Passages' : tag.charAt(0).toUpperCase() + tag.slice(1)}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <div className="passage-list">
@@ -85,9 +87,11 @@ function PassageSelector() {
             <div className="passage-info">
               <h3 className="passage-title">{passage.title}</h3>
               <div className="passage-meta">
-                <span className={`difficulty-badge ${passage.difficulty}`}>
-                  {passage.difficulty}
-                </span>
+                <div className="passage-tags">
+                  {passage.tags.map(tag => (
+                    <span key={tag} className="tag-badge">{tag}</span>
+                  ))}
+                </div>
                 <span className="word-count">{passage.wordCount} words</span>
                 <span className="reading-time">
                   ~{getReadingTimeEstimate(passage.wordCount).display}
@@ -111,9 +115,11 @@ function PassageSelector() {
             <div className="passage-details">
               <span className="passage-name">{selectedPassage.title}</span>
               <div className="passage-stats">
-                <span className={`difficulty-badge ${selectedPassage.difficulty}`}>
-                  {selectedPassage.difficulty}
-                </span>
+                <div className="passage-tags">
+                  {selectedPassage.tags.map(tag => (
+                    <span key={tag} className="tag-badge">{tag}</span>
+                  ))}
+                </div>
                 <span>{selectedPassage.wordCount} words</span>
                 <span>~{timeEstimate.display} reading time</span>
               </div>
