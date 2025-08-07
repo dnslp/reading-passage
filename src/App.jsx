@@ -9,7 +9,7 @@ function AppContent() {
   const { state } = useReading();
   const [showSettings, setShowSettings] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
-  
+
   const { currentSession, darkMode } = state;
 
   const handleStartNewSession = () => {
@@ -17,14 +17,14 @@ function AppContent() {
     window.location.reload();
   };
 
-  if (currentSession ) {
+  if (currentSession) {
     // Session is active, show reading interface
     return (
       <>
         <ReadingInterface />
-        <SettingsPanel 
-          isOpen={showSettings} 
-          onClose={() => setShowSettings(false)} 
+        <SettingsPanel
+          isOpen={showSettings}
+          onClose={() => setShowSettings(false)}
         />
       </>
     );
@@ -35,36 +35,37 @@ function AppContent() {
     <div className={`app ${darkMode ? 'dark' : ''}`}>
       <nav className="navbar">
         <div className="nav-controls">
-          <button 
-            onClick={() => setShowSettings(true)}
-            className="nav-btn settings-btn"
-            title="Display Settings"
-            aria-label="Open display settings"
-          >
-            ⚙️ Settings
-          </button>
-          <button 
+          <button
             onClick={() => setShowAbout(true)}
             className="nav-btn about-btn"
             title="About this app"
             aria-label="Show information about this application"
           >
-            ℹ️ About
+            ℹ️
           </button>
+          <button
+            onClick={() => setShowSettings(true)}
+            className="nav-btn settings-btn"
+            title="Display Settings"
+            aria-label="Open display settings"
+          >
+            ⚙️
+          </button>
+
         </div>
       </nav>
-      
+
       <main className="main-content">
         <div className="app-intro">
 
         </div>
-        
+
         <PassageSelector />
       </main>
 
-      <SettingsPanel 
-        isOpen={showSettings} 
-        onClose={() => setShowSettings(false)} 
+      <SettingsPanel
+        isOpen={showSettings}
+        onClose={() => setShowSettings(false)}
       />
 
       {showAbout && (
@@ -76,8 +77,8 @@ function AppContent() {
             </div>
             <div className="about-content">
               <p>
-                A mobile-optimized reading practice app designed to work seamlessly with 
-                iOS applications. Select passages at different difficulty levels and practice 
+                A mobile-optimized reading practice app designed to work seamlessly with
+                iOS applications. Select passages at different difficulty levels and practice
                 reading with customizable display settings and intuitive touch navigation.
               </p>
               <h3>Features:</h3>
