@@ -62,7 +62,7 @@ function NavigationControls({
 
       {/* Reading controls - simplified for mobile */}
       <div className="reading-controls">
-        <button
+        {/* <button
           onClick={toggleAutoScroll}
           className={`control-btn auto-scroll ${autoScroll ? 'active' : ''}`}
         >
@@ -75,12 +75,12 @@ function NavigationControls({
         >
           {focusMode ? '👁 Show UI' : '🎯 Focus'}
         </button>
-        
+         */}
         <button
           onClick={onEndSession}
           className="control-btn end-session"
         >
-          ✕ End Session
+          Back to reading list
         </button>
       </div>
 
@@ -104,9 +104,9 @@ function NavigationControls({
       )}
 
       {/* Touch navigation hint */}
-      <div className="navigation-hint">
+      {/* <div className="navigation-hint">
         💡 Swipe left/right or tap sides of text to navigate
-      </div>
+      </div> */}
     </div>
   );
 }

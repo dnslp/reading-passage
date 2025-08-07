@@ -584,7 +584,7 @@ tag-btn.active {
 /* Navigation Controls - Mobile First */
 .navigation-controls {
   background: var(--background-secondary);
-  padding: 1rem;
+  padding: .1rem;
   border-top: 1px solid var(--border);
   position: fixed;
   bottom: 0;
@@ -697,7 +697,7 @@ tag-btn.active {
 .nav-btn {
   flex: 1;
   min-height: var(--touch-target);
-  padding: 1rem;
+  padding: .1rem;
   border: 2px solid var(--border);
   background: var(--background);
   color: var(--text);
@@ -765,9 +765,9 @@ tag-btn.active {
 }
 
 .control-btn.end-session {
-  background: var(--danger);
+  /* background: var(--danger);
   color: white;
-  border-color: var(--danger);
+  border-color: var(--danger); */
 }
 
 .control-btn.end-session:hover {
@@ -850,7 +850,7 @@ tag-btn.active {
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: 1rem;
+  padding: .1rem;
 }
 
 .settings-panel {
@@ -988,10 +988,14 @@ tag-btn.active {
 }
 
 .settings-footer {
-  padding: 1.5rem;
-  border-top: 1px solid var(--border);
-  display: flex;
-  gap: 1rem;
+    padding: 1.5rem;
+    background: inherit;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 1rem;
+    position: sticky;
+    bottom: 0;
+    z-index: 100;
 }
 
 .reset-btn {

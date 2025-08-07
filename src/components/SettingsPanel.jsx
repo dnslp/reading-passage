@@ -167,7 +167,7 @@ const themeOptions = [
           </div>
 
           {/* Reading Controls */}
-          <div className="settings-section">
+          {/* <div className="settings-section">
             <h3>Reading Controls</h3>
             <div className="setting-group">
               <label htmlFor="scrollSpeed">Auto-scroll Speed: {scrollSpeed} WPM</label>
@@ -183,7 +183,7 @@ const themeOptions = [
               />
               <div className="range-labels"><span>25 WPM</span><span>400 WPM</span></div>
             </div>
-          </div>
+          </div> */}
 
           {/* Preview */}
           <div className="settings-section">
