@@ -1,3 +1,9 @@
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('../public/fonts/OpenDyslexic3-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
