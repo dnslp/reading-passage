@@ -7,8 +7,7 @@ function ReadingText({ text }) {
     lineHeight, 
     fontFamily, 
     columnView, 
-    contrast,
-    darkMode 
+    contrast
   } = state;
 
   const textStyles = {

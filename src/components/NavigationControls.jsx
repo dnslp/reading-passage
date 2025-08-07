@@ -8,7 +8,7 @@ function NavigationControls({
   onEndSession 
 }) {
   const { state, dispatch, actions } = useReading();
-  const { autoScroll, focusMode, scrollSpeed, chunks, currentChunkIndex, currentPassage, readingProgress } = state;
+  const { autoScroll, focusMode, scrollSpeed, chunks, currentPassage } = state;
 
   const toggleAutoScroll = () => {
     dispatch({ type: actions.TOGGLE_AUTO_SCROLL });

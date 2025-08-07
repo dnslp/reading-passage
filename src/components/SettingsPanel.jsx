@@ -13,7 +13,6 @@ function SettingsPanel({ isOpen, onClose }) {
     fontSize,
     lineHeight,
     fontFamily,
-    darkMode,
     columnView,
     contrast,
     scrollSpeed,
@@ -67,7 +66,7 @@ const themeOptions = [
   if (!isOpen) return null;
 
   return (
-    <div className="settings-overlay" data-theme={theme}>
+    <div className="settings-overlay">
       <div className="settings-panel">
         <div className="settings-header">
           <h2>Display Settings</h2>
@@ -126,17 +125,6 @@ const themeOptions = [
           {/* Layout & Theme */}
           <div className="settings-section">
             <h3>Layout & Theme</h3>
-            <div className="setting-group">
-              <div className="toggle-setting">
-                <label htmlFor="darkMode">Dark Mode</label>
-                <button
-                  id="darkMode"
-                  onClick={() => handleSettingChange('darkMode', !darkMode)}
-                  className={`toggle-btn ${darkMode ? 'active' : ''}`}
-                ><div className="toggle-slider" /></button>
-              </div>
-            </div>
-
             <div className="setting-group">
               <div className="toggle-setting">
                 <label htmlFor="columnView">Column Layout</label>

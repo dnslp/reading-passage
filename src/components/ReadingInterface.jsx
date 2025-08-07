@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useReading } from '../context/ReadingContext';
 import ProgressBar from './ProgressBar';
 import NavigationControls from './NavigationControls';
@@ -14,12 +14,10 @@ function ReadingInterface() {
     chunks,
     currentChunkIndex, 
     currentPassage,
-    readingProgress, 
     showControls, 
     focusMode,
     autoScroll,
     scrollSpeed,
-    darkMode,
   } = state;
 
   const currentChunk = chunks[currentChunkIndex];
@@ -49,22 +47,22 @@ function ReadingInterface() {
     }, scrollSpeed_ms);
 
     return () => clearInterval(interval);
-  }, [autoScroll, scrollSpeed, isLastChunk, currentChunkIndex, dispatch, actions]);
+  }, [autoScroll, scrollSpeed, isLastChunk, currentChunkIndex, dispatch, actions, handleNextChunk]);
   
   // Define navigation handlers
-  const handleNextChunk = () => {
+  const handleNextChunk = useCallback(() => {
     dispatch({ type: actions.NEXT_CHUNK });
     if (readingAreaRef.current) {
       readingAreaRef.current.scrollTop = 0;
     }
-  };
+  }, [dispatch, actions]);
 
-  const handlePreviousChunk = () => {
+  const handlePreviousChunk = useCallback(() => {
     dispatch({ type: actions.PREVIOUS_CHUNK });
     if (readingAreaRef.current) {
       readingAreaRef.current.scrollTop = 0;
     }
-  };
+  }, [dispatch, actions]);
 
   // Touch gesture handling
   const handleTouchStart = (e) => {
@@ -118,7 +116,7 @@ function ReadingInterface() {
   }
 
   return (
-    <div className={`reading-interface ${darkMode ? 'dark' : ''} ${focusMode ? 'focus-mode' : ''}`}>
+    <div className={`reading-interface ${focusMode ? 'focus-mode' : ''}`}>
       {!focusMode && <ProgressBar />}
       
       <div className="reading-container">

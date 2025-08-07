@@ -10,6 +10,7 @@ const defaultSettings = {
   columnView: true,
   contrast: 'normal',
   scrollSpeed: 50,
+  theme: 'light',
   modals: {},
 };
 

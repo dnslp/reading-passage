@@ -8,20 +8,16 @@ import './App.css';
 
 function AppContent() {
   const { settings } = useUserSettings();
-  const { darkMode } = settings;
-    const { state } = useReading();
+  const { theme } = settings;
+  const { state } = useReading();
   const { currentSession } = state;
 
   const [showSettings, setShowSettings] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
 
-  const handleStartNewSession = () => {
-    window.location.reload();
-  };
-
   if (currentSession && currentSession.passageId) {
     return (
-      <div className={`app ${darkMode ? 'dark' : ''}`}>
+      <div className="app" data-theme={theme}>
         <ReadingInterface />
         <SettingsPanel isOpen={showSettings} onClose={() => setShowSettings(false)} />
       </div>
@@ -29,7 +25,7 @@ function AppContent() {
   }
 
   return (
-    <div className={`app ${darkMode ? 'dark' : ''}`}>
+    <div className="app" data-theme={theme}>
       <nav className="navbar">
         <div className="nav-controls">
           <button
