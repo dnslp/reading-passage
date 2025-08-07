@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ReadingProvider } from './context/ReadingContext';
+import { ReadingProvider, useReading } from './context/ReadingContext';
 import { useUserSettings } from './context/UserSettingsContext';
 import PassageSelector from './components/PassageSelector';
 import ReadingInterface from './components/ReadingInterface';
@@ -8,7 +8,9 @@ import './App.css';
 
 function AppContent() {
   const { settings } = useUserSettings();
-  const { darkMode, currentSession } = settings;
+  const { darkMode } = settings;
+    const { state } = useReading();
+  const { currentSession } = state;
 
   const [showSettings, setShowSettings] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
@@ -17,7 +19,7 @@ function AppContent() {
     window.location.reload();
   };
 
-  if (currentSession) {
+  if (currentSession && currentSession.passageId) {
     return (
       <div className={`app ${darkMode ? 'dark' : ''}`}>
         <ReadingInterface />
