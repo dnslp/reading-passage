@@ -21,7 +21,7 @@ There is, according to legend, a boiling pot of gold at one end. People look, bu
 
 The Greeks used to imagine that it was a sign from the gods to foretell war or heavy rain. The Norsemen considered the rainbow as a bridge over which the gods passed from earth to their home in the sky. Others have tried to explain the phenomenon physically. Aristotle thought that the rainbow was caused by reflection of the sun's rays by the rain. Since then physicists have found that it is not reflection, but refraction by the raindrops which causes the rainbows.`,
     skillFocus: "Clarity",
-    tags: ["intake", "phonetically-balanced", "f0"],
+    tags: ["intake", "science", "history"],
     difficulty: "all",
     wordCount: getWordCount(`When the sunlight strikes raindrops in the air, they act as a prism and form a rainbow. The rainbow is a division of white light into many beautiful colors. These take the shape of a long round arch, with its path high above, and its two ends apparently beyond the horizon.
 
@@ -40,7 +40,7 @@ During a total lunar eclipse, the moon takes on a reddish hue, earning the nickn
 
 Legends speak of moon goddesses and mythical creatures that inhabit this glowing orb. The moon continues to be a source of wonder, its silent presence a reminder of the vastness and mystery of the universe. Whether observed through a telescope or admired with the naked eye, the moon remains a symbol of beauty and enigma.`,
     skillFocus: "Storytelling",
-    tags: ["intake", "phonetically-balanced", "f0"],
+    tags: ["intake", "science"],
     difficulty: "all",
     wordCount: getWordCount(`The moon, a celestial beacon, has fascinated humanity since time immemorial. Its pale, luminous glow casts a serene light across the night sky, influencing tides and inspiring countless myths and legends. As it orbits the Earth, the moon goes through phases, from the slender crescent to the full, round brilliance that illuminates the darkness.
 
@@ -59,7 +59,7 @@ Shape the dough into a loaf, then let it rise again, covering it with a damp clo
 
 The first bite of fresh, homemade bread is a delight, the crust crisp and the interior soft and warm. Each slice carries the essence of the baker's skill and patience, a testament to the timeless art of bread-making.`,
     skillFocus: "Warmth",
-    tags: ["intake", "phonetically-balanced", "f0"],
+    tags: ["intake", "history"],
     difficulty: "all",
     wordCount: getWordCount(`Baking bread is an ancient craft, cherished across cultures and generations. First, gather your ingredients: flour, yeast, salt, and water. Mix them gently until a soft dough forms. Knead it thoroughly, pressing and folding, feeling it transform beneath your hands. As it rises, it doubles in size, the yeast working its magic, creating pockets of air that will give the bread its soft, airy texture.
 
@@ -78,7 +78,7 @@ Their eyes, often described as piercing and intelligent, seemed to hold the secr
 
 In modern fantasy, dragons continue to soar across the pages of books and screens of movies, their legacy enduring. They symbolize power, wisdom, and mystery, a testament to the enduring allure of these magnificent creatures.`,
     skillFocus: "Authority",
-    tags: ["intake", "phonetically-balanced", "f0"],
+    tags: ["intake", "fantasy", "history"],
     difficulty: "all",
     wordCount: getWordCount(`Dragons, majestic and mythical, have captivated imaginations for centuries. These legendary creatures, with scales that shimmer in the sunlight, wings that span the sky, and fiery breath, are both feared and revered. In tales of old, dragons guarded vast treasures, their lairs hidden in mountains or deep within enchanted forests.
 
@@ -97,7 +97,7 @@ I choose to treat myself with kindness and patience. When challenges appear, I m
 
 I notice the sounds around me and feel my feet on the ground. I am grounded, focused, and ready for what comes next. With every breath, I return to this moment, reminding myself that peace begins within me.`,
     skillFocus: "Centering",
-    tags: ["intake", "phonetically-balanced", "f0", "self-talk", "mindfulness"],
+    tags: ["intake", "mindfulness"],
     difficulty: "all",
     wordCount: getWordCount(`Take a deep breath and notice the air filling your lungs. Let your shoulders relax as you exhale slowly. Remind yourself: I am safe, I am present, and I am enough. My thoughts are gentle, and my mind is calm.
 

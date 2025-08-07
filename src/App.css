@@ -103,6 +103,7 @@
 }
 
 
+
 /* Base App Styles */
 .app {
   min-height: 100vh;
@@ -210,7 +211,7 @@
 
 .selector-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: .2rem;
 }
 
 .selector-header h2 {
@@ -268,6 +269,7 @@
 
 .passage-list {
   margin-bottom: 2rem;
+  padding: 0;
 }
 
 .passage-item {
@@ -320,6 +322,17 @@
   gap: 1rem;
   align-items: center;
   margin-bottom: 0.5rem;
+}
+
+.tag-btn{
+    border-radius: 18px;
+    padding: 11px 10px;
+    margin: 5px;
+}
+tag-btn.active {
+  border: 10px;
+  border-color: var(--background-secondary);
+  background-color: var(--background-secondary);
 }
 
 .difficulty-badge {

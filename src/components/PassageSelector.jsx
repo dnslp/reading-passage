@@ -8,127 +8,83 @@ function PassageSelector() {
   const [selectedTag, setSelectedTag] = useState('all');
   const [selectedPassageId, setSelectedPassageId] = useState(null);
 
-  const tags = getUniqueTags();
+const tags = Array.from(new Set(['all', ...getUniqueTags()]));
 
-  // Check for URL parameters on mount to pre-select passage
+  // Pre-select from URL
   useEffect(() => {
-    const urlParams = getUrlParams();
-    if (urlParams.passageId) {
-      setSelectedPassageId(urlParams.passageId);
-    }
+    const { passageId } = getUrlParams();
+    if (passageId) setSelectedPassageId(passageId);
   }, []);
-  
-  const getFilteredPassages = () => {
-    return getPassagesByTag(selectedTag);
-  };
 
-  const handlePassageSelect = (passageId) => {
-    setSelectedPassageId(passageId === selectedPassageId ? null : passageId);
-  };
-
-  const startSession = () => {
-    const selectedPassage = passages.find(p => p.id === selectedPassageId);
-    if (!selectedPassage) return;
-    
-    const urlParams = getUrlParams();
-    const initialChunkIndex = urlParams.chunk || 0;
-    
-    dispatch({
-      type: actions.START_SESSION,
-      payload: {
-        passage: selectedPassage,
-        initialChunkIndex: initialChunkIndex,
-      },
-    });
-  };
-
-  const filteredPassages = getFilteredPassages();
+  const filteredPassages = getPassagesByTag(selectedTag);
   const selectedPassage = passages.find(p => p.id === selectedPassageId);
   const timeEstimate = selectedPassage ? getReadingTimeEstimate(selectedPassage.wordCount) : null;
 
+  const handlePassageSelect = (id) => {
+    setSelectedPassageId(prev => (prev === id ? null : id));
+  };
+
+  const startSession = () => {
+    if (!selectedPassage) return;
+    const { chunk = 0 } = getUrlParams();
+    dispatch({
+      type: actions.START_SESSION,
+      payload: { passage: selectedPassage, initialChunkIndex: chunk }
+    });
+  };
+
   return (
     <div className="passage-selector">
-      <div className="selector-header">
-        <h2>Select Reading Passages</h2>
-        <p>Choose the passages you want to practice reading</p>
-      </div>
+      <header className="selector-header">
+        <h2>Select a Passage</h2>
+        <p>Practice reading: choose a passage below.</p>
+      </header>
 
+      {/* Tag Filter as Buttons */}
       <div className="filter-controls">
-        <div className="filter-group">
-          <label htmlFor="tag-filter">Filter by Tag:</label>
-          <select
-            id="tag-filter"
-            value={selectedTag}
-            onChange={(e) => setSelectedTag(e.target.value)}
-            className="tag-select"
+        {tags.map(tag => (
+          <button
+            key={tag}
+            className={`tag-btn ${selectedTag === tag ? 'active' : ''}`}
+            onClick={() => setSelectedTag(tag)}
           >
-            {tags.map(tag => (
-              <option key={tag} value={tag}>
-                {tag === 'all' ? 'All Passages' : tag.charAt(0).toUpperCase() + tag.slice(1)}
-              </option>
-            ))}
-          </select>
-        </div>
+            {tag === 'all' ? 'All' : tag.charAt(0).toUpperCase() + tag.slice(1)}
+          </button>
+        ))}
       </div>
 
-      <div className="passage-list">
-        <div className="list-controls">
-          <span className="passage-count">
-            {filteredPassages.length} passages available
-          </span>
-        </div>
-
+      {/* Passage List */}
+      <ul className="passage-list">
         {filteredPassages.map(passage => (
-          <div 
-            key={passage.id} 
+          <li
+            key={passage.id}
             className={`passage-item ${selectedPassageId === passage.id ? 'selected' : ''}`}
             onClick={() => handlePassageSelect(passage.id)}
           >
             <div className="passage-info">
               <h3 className="passage-title">{passage.title}</h3>
               <div className="passage-meta">
-                <div className="passage-tags">
-                  {passage.tags.map(tag => (
-                    <span key={tag} className="tag-badge">{tag}</span>
-                  ))}
-                </div>
-                <span className="word-count">{passage.wordCount} words</span>
+                {passage.tags.map(tag => (
+                  <span key={tag} className="tag-badge">{tag}</span>
+                ))}
                 <span className="reading-time">
-                  ~{getReadingTimeEstimate(passage.wordCount).display}
+                  🕒 ~{getReadingTimeEstimate(passage.wordCount).display}
                 </span>
               </div>
-              <p className="passage-preview">
-                {passage.text.substring(0, 120)}...
-              </p>
+              <p className="passage-preview">{passage.text.slice(0, 100)}…</p>
             </div>
-            {selectedPassageId === passage.id && (
-              <div className="selection-indicator">✓</div>
-            )}
-          </div>
+            {selectedPassageId === passage.id && <span className="selection-indicator">✓</span>}
+          </li>
         ))}
-      </div>
+      </ul>
 
+      {/* Summary & Start Button */}
       {selectedPassage && (
         <div className="session-summary">
           <div className="selected-passage-info">
-            <h3>Selected Passage:</h3>
-            <div className="passage-details">
-              <span className="passage-name">{selectedPassage.title}</span>
-              <div className="passage-stats">
-                <div className="passage-tags">
-                  {selectedPassage.tags.map(tag => (
-                    <span key={tag} className="tag-badge">{tag}</span>
-                  ))}
-                </div>
-                <span>{selectedPassage.wordCount} words</span>
-                <span>~{timeEstimate.display} reading time</span>
-              </div>
-            </div>
+            <strong>Selected:</strong> {selectedPassage.title} — {selectedPassage.wordCount} words ({timeEstimate.display})
           </div>
-          <button 
-            onClick={startSession}
-            className="start-session-btn"
-          >
+          <button onClick={startSession} className="start-session-btn">
             Start Reading
           </button>
         </div>
