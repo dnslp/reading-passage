@@ -1,16 +1,18 @@
 import { useState } from 'react';
-import { ReadingProvider, useReading } from './context/ReadingContext';
+import { ReadingProvider } from './context/ReadingContext';
+import { useUserSettings } from './context/UserSettingsContext';
 import PassageSelector from './components/PassageSelector';
 import ReadingInterface from './components/ReadingInterface';
 import SettingsPanel from './components/SettingsPanel';
 import './App.css';
 
 function AppContent() {
-  const { state } = useReading();
+  const { settings } = useUserSettings();
+  const { darkMode } = settings;
   const [showSettings, setShowSettings] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
 
-  const { currentSession, darkMode } = state;
+  const { currentSession } = settings;
 
   const handleStartNewSession = () => {
     // Reset to passage selector

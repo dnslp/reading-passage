@@ -1,7 +1,7 @@
-import { useReading } from '../context/ReadingContext';
+import { useUserSettings } from '../context/UserSettingsContext';
 
 function SettingsPanel({ isOpen, onClose }) {
-  const { state, dispatch, actions } = useReading();
+  const { settings, setSettings } = useUserSettings();
   const {
     fontSize,
     lineHeight,
@@ -10,7 +10,7 @@ function SettingsPanel({ isOpen, onClose }) {
     columnView,
     contrast,
     scrollSpeed,
-  } = state;
+  } = settings;
 
   const fontOptions = [
     { value: 'Georgia', label: 'Georgia (Serif)' },
@@ -27,40 +27,47 @@ function SettingsPanel({ isOpen, onClose }) {
     { value: 'low', label: 'Low Contrast' },
   ];
 
+  const handleSettingChange = (key, value) => {
+    setSettings(prevSettings => ({ ...prevSettings, [key]: value }));
+  };
+
   const handleFontSizeChange = (e) => {
-    dispatch({ type: actions.SET_FONT_SIZE, payload: parseInt(e.target.value) });
+    handleSettingChange('fontSize', parseInt(e.target.value));
   };
 
   const handleLineHeightChange = (e) => {
-    dispatch({ type: actions.SET_LINE_HEIGHT, payload: parseFloat(e.target.value) });
+    handleSettingChange('lineHeight', parseFloat(e.target.value));
   };
 
   const handleFontFamilyChange = (e) => {
-    dispatch({ type: actions.SET_FONT_FAMILY, payload: e.target.value });
+    handleSettingChange('fontFamily', e.target.value);
   };
 
   const toggleDarkMode = () => {
-    dispatch({ type: actions.TOGGLE_DARK_MODE });
+    handleSettingChange('darkMode', !darkMode);
   };
 
   const toggleColumnView = () => {
-    dispatch({ type: actions.TOGGLE_COLUMN_VIEW });
+    handleSettingChange('columnView', !columnView);
   };
 
   const handleContrastChange = (e) => {
-    dispatch({ type: actions.SET_CONTRAST, payload: e.target.value });
+    handleSettingChange('contrast', e.target.value);
   };
 
   const handleScrollSpeedChange = (e) => {
-    dispatch({ type: actions.SET_SCROLL_SPEED, payload: parseInt(e.target.value) });
+    handleSettingChange('scrollSpeed', parseInt(e.target.value));
   };
 
   const resetToDefaults = () => {
-    dispatch({ type: actions.SET_FONT_SIZE, payload: 18 });
-    dispatch({ type: actions.SET_LINE_HEIGHT, payload: 1.6 });
-    dispatch({ type: actions.SET_FONT_FAMILY, payload: 'Georgia' });
-    dispatch({ type: actions.SET_CONTRAST, payload: 'normal' });
-    dispatch({ type: actions.SET_SCROLL_SPEED, payload: 50 });
+    setSettings(prevSettings => ({
+      ...prevSettings,
+      fontSize: 18,
+      lineHeight: 1.6,
+      fontFamily: 'Georgia',
+      contrast: 'normal',
+      scrollSpeed: 50,
+    }));
   };
 
   if (!isOpen) return null;
