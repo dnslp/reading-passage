@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { ReadingProvider } from './context/ReadingContext';
 import { useUserSettings } from './context/UserSettingsContext';
 import PassageSelector from './components/PassageSelector';
@@ -8,31 +8,24 @@ import './App.css';
 
 function AppContent() {
   const { settings } = useUserSettings();
-  const { darkMode } = settings;
+  const { darkMode, currentSession } = settings;
+
   const [showSettings, setShowSettings] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
 
-  const { currentSession } = settings;
-
   const handleStartNewSession = () => {
-    // Reset to passage selector
     window.location.reload();
   };
 
   if (currentSession) {
-    // Session is active, show reading interface
     return (
-      <>
+      <div className={`app ${darkMode ? 'dark' : ''}`}>
         <ReadingInterface />
-        <SettingsPanel
-          isOpen={showSettings}
-          onClose={() => setShowSettings(false)}
-        />
-      </>
+        <SettingsPanel isOpen={showSettings} onClose={() => setShowSettings(false)} />
+      </div>
     );
   }
 
-  // Default view: passage selector
   return (
     <div className={`app ${darkMode ? 'dark' : ''}`}>
       <nav className="navbar">
@@ -53,22 +46,14 @@ function AppContent() {
           >
             ⚙️
           </button>
-
         </div>
       </nav>
 
       <main className="main-content">
-        <div className="app-intro">
-
-        </div>
-
         <PassageSelector />
       </main>
 
-      <SettingsPanel
-        isOpen={showSettings}
-        onClose={() => setShowSettings(false)}
-      />
+      <SettingsPanel isOpen={showSettings} onClose={() => setShowSettings(false)} />
 
       {showAbout && (
         <div className="about-overlay">
@@ -116,4 +101,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
