@@ -160,14 +160,14 @@ function ReadingInterface() {
         )}
       </div>
 
-      {!focusMode && (
+      {/* {!focusMode && (
         <div className="reading-instructions">
           <p>
             <strong>Navigation:</strong> Swipe left/right or tap sides to navigate between parts • 
             Tap center in focus mode to show controls
           </p>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
