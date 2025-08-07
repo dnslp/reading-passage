@@ -1,34 +1,8 @@
 import { createContext, useContext, useReducer, useEffect } from 'react';
 import { createTextChunks, calculateReadingProgress } from '../utils/textChunking';
+import { useUserSettings } from './UserSettingsContext';
 
 const ReadingContext = createContext();
-
-// Initial state
-const initialState = {
-  // Session management
-  currentSession: null,
-  currentPassage: null,
-  currentChunkIndex: 0,
-  chunks: [],
-  readingProgress: 0,
-  
-  // Display preferences
-  fontSize: 20, // Larger default for mobile
-  lineHeight: 1.8, // More spacing for mobile reading
-  fontFamily: 'Georgia',
-  darkMode: false,
-  focusMode: false,
-  columnView: true,
-  contrast: 'normal',
-  
-  // Reading controls
-  autoScroll: false,
-  scrollSpeed: 50, // words per minute
-  
-  // UI state
-  showControls: true,
-  showProgress: true,
-};
 
 // Action types
 const ACTIONS = {
@@ -249,46 +223,38 @@ function readingReducer(state, action) {
 
 // Context Provider
 export function ReadingProvider({ children }) {
+  const { settings } = useUserSettings();
+
+  const initialState = {
+    // Session management
+    currentSession: null,
+    currentPassage: null,
+    currentChunkIndex: 0,
+    chunks: [],
+    readingProgress: 0,
+
+    // Display preferences from UserSettingsContext
+    ...settings,
+
+    // Reading controls
+    autoScroll: false,
+
+    // UI state
+    showControls: true,
+    showProgress: true,
+  };
+
   const [state, dispatch] = useReducer(readingReducer, initialState);
-  
-  // Load preferences from localStorage on mount
-  useEffect(() => {
-    const savedPreferences = localStorage.getItem('readingPreferences');
-    if (savedPreferences) {
-      const preferences = JSON.parse(savedPreferences);
-      Object.entries(preferences).forEach(([key, value]) => {
-        const actionType = `SET_${key.toUpperCase()}`;
-        if (ACTIONS[actionType]) {
-          dispatch({ type: ACTIONS[actionType], payload: value });
-        }
-      });
-    }
-  }, []);
-  
-  // Save preferences to localStorage when they change
-  useEffect(() => {
-    const preferences = {
-      fontSize: state.fontSize,
-      lineHeight: state.lineHeight,
-      fontFamily: state.fontFamily,
-      darkMode: state.darkMode,
-      columnView: state.columnView,
-      contrast: state.contrast,
-      scrollSpeed: state.scrollSpeed,
-    };
-    localStorage.setItem('readingPreferences', JSON.stringify(preferences));
-  }, [state.fontSize, state.lineHeight, state.fontFamily, state.darkMode, 
-      state.columnView, state.contrast, state.scrollSpeed]);
 
   // Regenerate chunks when display settings change during active session
   useEffect(() => {
     if (state.currentSession && state.currentPassage) {
       dispatch({ type: ACTIONS.REGENERATE_CHUNKS });
     }
-  }, [state.fontSize, state.lineHeight, state.columnView]);
+  }, [settings.fontSize, settings.lineHeight, settings.columnView, state.currentSession, state.currentPassage]);
   
   const value = {
-    state,
+    state: { ...state, ...settings }, // Combine reading state with user settings
     dispatch,
     actions: ACTIONS,
     urlUtils: { getUrlParams, updateUrlParams },
