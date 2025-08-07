@@ -476,10 +476,10 @@ tag-btn.active {
 }
 
 .passage-header {
-  margin-bottom: 2rem;
+  margin-bottom: .2rem;
   text-align: center;
   border-bottom: 1px solid var(--border);
-  padding-bottom: 1rem;
+  padding-bottom: .1rem;
 }
 
 .passage-title {
@@ -771,7 +771,7 @@ tag-btn.active {
 }
 
 .control-btn.end-session:hover {
-  background: #dc2626;
+  /* background: #dc2626; */
 }
 
 /* Auto-scroll speed control */

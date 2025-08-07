@@ -36,8 +36,8 @@ const tags = Array.from(new Set(['all', ...getUniqueTags()]));
   return (
     <div className="passage-selector">
       <header className="selector-header">
-        <h2>Select a Passage</h2>
-        <p>Practice reading: choose a passage below.</p>
+        <h3>Select a Passage</h3>
+        {/* <p>Practice reading: choose a passage below.</p> */}
       </header>
 
       {/* Tag Filter as Buttons */}
