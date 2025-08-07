@@ -26,7 +26,7 @@ function ProgressBar() {
             <div
               key={index}
               className={`chunk-marker ${index <= currentChunkIndex ? 'completed' : ''}`}
-              style={{ left: `${(index / (chunks.length - 1)) * 100}%` }}
+              style={{ left: `${((index + 1) / chunks.length) * 100}%` }}
             />
           ))}
         </div>

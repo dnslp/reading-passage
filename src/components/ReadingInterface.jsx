@@ -112,7 +112,14 @@ function ReadingInterface() {
   };
 
   if (!currentPassage || !currentChunk) {
-    return <div>Loading...</div>;
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner">
+          <div className="spinner-circle"></div>
+        </div>
+        <p className="loading-text">Loading passage...</p>
+      </div>
+    );
   }
 
   return (

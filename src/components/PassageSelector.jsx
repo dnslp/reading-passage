@@ -73,7 +73,6 @@ const tags = Array.from(new Set(['all', ...getUniqueTags()]));
               </div>
               <p className="passage-preview">{passage.text.slice(0, 100)}…</p>
             </div>
-            {selectedPassageId === passage.id && <span className="selection-indicator">✓</span>}
           </li>
         ))}
       </ul>
