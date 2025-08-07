@@ -24,6 +24,21 @@ function ReadingInterface() {
   const isFirstChunk = currentChunkIndex === 0;
   const isLastChunk = currentChunkIndex === chunks.length - 1;
 
+  // Define navigation handlers
+  const handleNextChunk = useCallback(() => {
+    dispatch({ type: actions.NEXT_CHUNK });
+    if (readingAreaRef.current) {
+      readingAreaRef.current.scrollTop = 0;
+    }
+  }, [dispatch, actions]);
+
+  const handlePreviousChunk = useCallback(() => {
+    dispatch({ type: actions.PREVIOUS_CHUNK });
+    if (readingAreaRef.current) {
+      readingAreaRef.current.scrollTop = 0;
+    }
+  }, [dispatch, actions]);
+
   // Auto-scroll functionality
   useEffect(() => {
     if (!autoScroll || !readingAreaRef.current) return;
@@ -48,21 +63,6 @@ function ReadingInterface() {
 
     return () => clearInterval(interval);
   }, [autoScroll, scrollSpeed, isLastChunk, currentChunkIndex, dispatch, actions, handleNextChunk]);
-  
-  // Define navigation handlers
-  const handleNextChunk = useCallback(() => {
-    dispatch({ type: actions.NEXT_CHUNK });
-    if (readingAreaRef.current) {
-      readingAreaRef.current.scrollTop = 0;
-    }
-  }, [dispatch, actions]);
-
-  const handlePreviousChunk = useCallback(() => {
-    dispatch({ type: actions.PREVIOUS_CHUNK });
-    if (readingAreaRef.current) {
-      readingAreaRef.current.scrollTop = 0;
-    }
-  }, [dispatch, actions]);
 
   // Touch gesture handling
   const handleTouchStart = (e) => {
