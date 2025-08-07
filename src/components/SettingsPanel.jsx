@@ -1,12 +1,11 @@
 import { useUserSettings } from '../context/UserSettingsContext';
 
-// Make sure you have added this to your global CSS (e.g. index.css):
-// @font-face {
-//   font-family: 'OpenDyslexic';
-//   src: url('/fonts/OpenDyslexic3-Regular.ttf') format('truetype');
-//   font-weight: normal;
-//   font-style: normal;
-// }
+// Ensure your global CSS includes theme overrides, e.g.:
+//
+// [data-theme="light"] { /* defaults from :root */ }
+// [data-theme="dark"] { /* dark variables */ }
+// [data-theme="sepia"] { /* sepia variables */ }
+// [data-theme="solarized"] { /* solarized variables */ }
 
 function SettingsPanel({ isOpen, onClose }) {
   const { settings, setSettings } = useUserSettings();
@@ -18,6 +17,7 @@ function SettingsPanel({ isOpen, onClose }) {
     columnView,
     contrast,
     scrollSpeed,
+    theme,
   } = settings;
 
   const fontOptions = [
@@ -36,54 +36,39 @@ function SettingsPanel({ isOpen, onClose }) {
     { value: 'low', label: 'Low Contrast' },
   ];
 
+const themeOptions = [
+  { value: 'light',      label: 'Light' },
+  { value: 'dark',       label: 'Dark' },
+  { value: 'sepia',      label: 'Sepia' },
+  { value: 'solarized',  label: 'Solarized' },
+  { value: 'midnight',   label: 'Midnight' },
+  { value: 'forest',     label: 'Forest' },
+  { value: 'dracula',    label: 'Dracula' },
+  { value: 'high-contrast', label: 'High Contrast' },
+];
   const handleSettingChange = (key, value) => {
-    setSettings(prevSettings => ({ ...prevSettings, [key]: value }));
-  };
-
-  const handleFontSizeChange = (e) => {
-    handleSettingChange('fontSize', parseInt(e.target.value));
-  };
-
-  const handleLineHeightChange = (e) => {
-    handleSettingChange('lineHeight', parseFloat(e.target.value));
-  };
-
-  const handleFontFamilyChange = (e) => {
-    handleSettingChange('fontFamily', e.target.value);
-  };
-
-  const toggleDarkMode = () => {
-    handleSettingChange('darkMode', !darkMode);
-  };
-
-  const toggleColumnView = () => {
-    handleSettingChange('columnView', !columnView);
-  };
-
-  const handleContrastChange = (e) => {
-    handleSettingChange('contrast', e.target.value);
-  };
-
-  const handleScrollSpeedChange = (e) => {
-    handleSettingChange('scrollSpeed', parseInt(e.target.value));
+    setSettings(prev => ({ ...prev, [key]: value }));
   };
 
   const resetToDefaults = () => {
-    setSettings(prevSettings => ({
-      ...prevSettings,
+    setSettings(prev => ({
+      ...prev,
       fontSize: 18,
       lineHeight: 1.6,
-      fontFamily: 'Georgia',
+      fontFamily: 'Georgia, serif',
       contrast: 'normal',
       scrollSpeed: 50,
+      darkMode: false,
+      columnView: false,
+      theme: 'light',
     }));
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="settings-overlay">
-      <div className={`settings-panel ${darkMode ? 'dark' : ''}`}>
+    <div className="settings-overlay" data-theme={theme}>
+      <div className="settings-panel">
         <div className="settings-header">
           <h2>Display Settings</h2>
           <button onClick={onClose} className="close-btn">×</button>
@@ -102,7 +87,7 @@ function SettingsPanel({ isOpen, onClose }) {
                 max="32"
                 step="1"
                 value={fontSize}
-                onChange={handleFontSizeChange}
+                onChange={e => handleSettingChange('fontSize', parseInt(e.target.value, 10))}
                 className="slider"
               />
               <div className="range-labels"><span>12px</span><span>32px</span></div>
@@ -117,7 +102,7 @@ function SettingsPanel({ isOpen, onClose }) {
                 max="2.5"
                 step="0.1"
                 value={lineHeight}
-                onChange={handleLineHeightChange}
+                onChange={e => handleSettingChange('lineHeight', parseFloat(e.target.value))}
                 className="slider"
               />
               <div className="range-labels"><span>Tight</span><span>Loose</span></div>
@@ -128,7 +113,7 @@ function SettingsPanel({ isOpen, onClose }) {
               <select
                 id="fontFamily"
                 value={fontFamily}
-                onChange={handleFontFamilyChange}
+                onChange={e => handleSettingChange('fontFamily', e.target.value)}
                 className="select"
               >
                 {fontOptions.map(({ value, label }) => (
@@ -146,11 +131,9 @@ function SettingsPanel({ isOpen, onClose }) {
                 <label htmlFor="darkMode">Dark Mode</label>
                 <button
                   id="darkMode"
-                  onClick={toggleDarkMode}
+                  onClick={() => handleSettingChange('darkMode', !darkMode)}
                   className={`toggle-btn ${darkMode ? 'active' : ''}`}
-                >
-                  <div className="toggle-slider" />
-                </button>
+                ><div className="toggle-slider" /></button>
               </div>
             </div>
 
@@ -159,11 +142,9 @@ function SettingsPanel({ isOpen, onClose }) {
                 <label htmlFor="columnView">Column Layout</label>
                 <button
                   id="columnView"
-                  onClick={toggleColumnView}
+                  onClick={() => handleSettingChange('columnView', !columnView)}
                   className={`toggle-btn ${columnView ? 'active' : ''}`}
-                >
-                  <div className="toggle-slider" />
-                </button>
+                ><div className="toggle-slider" /></button>
               </div>
               <small className="setting-description">Centers text in a readable column width</small>
             </div>
@@ -173,10 +154,24 @@ function SettingsPanel({ isOpen, onClose }) {
               <select
                 id="contrast"
                 value={contrast}
-                onChange={handleContrastChange}
+                onChange={e => handleSettingChange('contrast', e.target.value)}
                 className="select"
               >
                 {contrastOptions.map(({ value, label }) => (
+                  <option key={value} value={value}>{label}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="setting-group">
+              <label htmlFor="theme">Theme</label>
+              <select
+                id="theme"
+                value={theme}
+                onChange={e => handleSettingChange('theme', e.target.value)}
+                className="select"
+              >
+                {themeOptions.map(({ value, label }) => (
                   <option key={value} value={value}>{label}</option>
                 ))}
               </select>
@@ -195,7 +190,7 @@ function SettingsPanel({ isOpen, onClose }) {
                 max="400"
                 step="25"
                 value={scrollSpeed}
-                onChange={handleScrollSpeedChange}
+                onChange={e => handleSettingChange('scrollSpeed', parseInt(e.target.value, 10))}
                 className="slider"
               />
               <div className="range-labels"><span>25 WPM</span><span>400 WPM</span></div>

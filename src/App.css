@@ -30,6 +30,79 @@
   --shadow: rgba(0, 0, 0, 0.3);
 }
 
+/* Sepia theme */
+[data-theme="sepia"] {
+  --background: #f4ecd8;
+  --background-secondary: #e9dfc7;
+  --text: #5b4636;
+  --text-secondary: #73624b;
+  --border: #d6c6ac;
+  --primary-color: #a67c52;
+  --primary-dark: #8b663a;
+  --shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* Solarized theme */
+[data-theme="solarized"] {
+  --background: #fdf6e3;
+  --background-secondary: #eee8d5;
+  --text: #657b83;
+  --text-secondary: #586e75;
+  --border: #93a1a1;
+  --primary-color: #268bd2;
+  --primary-dark: #00629d;
+  --shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* Midnight: very dark, cool blues */
+[data-theme="midnight"] {
+  --background: #0f111a;
+  --background-secondary: #1a1d2a;
+  --text: #cfd8fc;
+  --text-secondary: #8f9bb3;
+  --border: #2a2f49;
+  --primary-color: #5c6bc0;
+  --primary-dark: #3f4a9c;
+  --shadow: rgba(0,0,0,0.5);
+}
+
+/* Forest: deep greens, earthy tones */
+[data-theme="forest"] {
+  --background: #eef6ee;
+  --background-secondary: #d8e8d8;
+  --text: #2e3e2e;
+  --text-secondary: #556655;
+  --border: #aacbaa;
+  --primary-color: #4e7d4e;
+  --primary-dark: #3b5a3b;
+  --shadow: rgba(0,0,0,0.1);
+}
+
+/* Dracula: vibrant purples on dark */
+[data-theme="dracula"] {
+  --background: #282a36;
+  --background-secondary: #44475a;
+  --text: #f8f8f2;
+  --text-secondary: #6272a4;
+  --border: #6272a4;
+  --primary-color: #bd93f9;
+  --primary-dark: #8a60d5;
+  --shadow: rgba(0,0,0,0.6);
+}
+
+/* High Contrast: black & white for maximal legibility */
+[data-theme="high-contrast"] {
+  --background: #000000;
+  --background-secondary: #ffffff;
+  --text: #ffffff;
+  --text-secondary: #cccccc;
+  --border: #ffffff;
+  --primary-color: #ffffff;
+  --primary-dark: #dddddd;
+  --shadow: rgba(255,255,255,0.3);
+}
+
+
 /* Base App Styles */
 .app {
   min-height: 100vh;
