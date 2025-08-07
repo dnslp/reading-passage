@@ -30,14 +30,14 @@ function NavigationControls({
   return (
     <div className="navigation-controls">
       {/* Chunk progress - prominent on mobile */}
-      <div className="chunk-progress">
+      {/* <div className="chunk-progress">
         <span className="chunk-counter">
           Part {currentChunkIndex + 1} of {chunks.length}
         </span>
         <div className="progress-summary">
           {readingProgress}% of "{currentPassage.title}"
         </div>
-      </div>
+      </div> */}
 
       {/* Main navigation buttons - large touch targets */}
       <div className="nav-buttons">
