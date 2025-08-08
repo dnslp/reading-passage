@@ -6,8 +6,7 @@ function ReadingText({ text }) {
     fontSize, 
     lineHeight, 
     fontFamily, 
-    columnView, 
-    contrast
+    columnView
   } = state;
 
   const textStyles = {
@@ -18,14 +17,8 @@ function ReadingText({ text }) {
     margin: columnView ? '0 auto' : '0',
   };
 
-  const getContrastClass = () => {
-    if (contrast === 'high') return 'high-contrast';
-    if (contrast === 'low') return 'low-contrast';
-    return '';
-  };
-
   return (
-    <div className={`reading-text ${getContrastClass()}`}>
+    <div className="reading-text">
       <div style={textStyles} className="text-content">
         {text.split('\n').map((paragraph, index) => (
           <p key={index} className="text-paragraph">

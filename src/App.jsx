@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ReadingProvider, useReading } from './context/ReadingContext';
 import { useUserSettings } from './context/UserSettingsContext';
 import PassageSelector from './components/PassageSelector';
@@ -14,6 +14,18 @@ function AppContent() {
 
   const [showSettings, setShowSettings] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Add scroll listener to detect when user scrolls down
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      setIsScrolled(scrollTop > 50); // Trigger compact mode after 50px scroll
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   if (currentSession && currentSession.passageId) {
     return (
@@ -26,7 +38,7 @@ function AppContent() {
 
   return (
     <div className="app" data-theme={theme}>
-      <nav className="navbar">
+      <nav className={`navbar ${isScrolled ? 'navbar-compact' : ''}`}>
         <div className="nav-controls">
           <button
             onClick={() => setShowAbout(true)}

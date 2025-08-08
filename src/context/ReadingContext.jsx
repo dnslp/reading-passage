@@ -20,7 +20,6 @@ const ACTIONS = {
   TOGGLE_DARK_MODE: 'TOGGLE_DARK_MODE',
   TOGGLE_FOCUS_MODE: 'TOGGLE_FOCUS_MODE',
   TOGGLE_COLUMN_VIEW: 'TOGGLE_COLUMN_VIEW',
-  SET_CONTRAST: 'SET_CONTRAST',
   
   // Reading controls
   TOGGLE_AUTO_SCROLL: 'TOGGLE_AUTO_SCROLL',
@@ -59,6 +58,7 @@ function readingReducer(state, action) {
         fontSize: state.fontSize,
         lineHeight: state.lineHeight,
         columnView: state.columnView,
+        fontFamily: state.fontFamily,
       });
       
       const validChunkIndex = Math.min(initialChunkIndex, chunks.length - 1);
@@ -149,6 +149,7 @@ function readingReducer(state, action) {
         fontSize: state.fontSize,
         lineHeight: state.lineHeight,
         columnView: state.columnView,
+        fontFamily: state.fontFamily,
       });
       
       // Adjust current chunk index to maintain relative position
@@ -201,8 +202,6 @@ function readingReducer(state, action) {
       const newState3 = { ...state, columnView: !state.columnView };
       return newState3;
       
-    case ACTIONS.SET_CONTRAST:
-      return { ...state, contrast: action.payload };
       
     case ACTIONS.TOGGLE_AUTO_SCROLL:
       return { ...state, autoScroll: !state.autoScroll };
@@ -251,7 +250,7 @@ export function ReadingProvider({ children }) {
     if (state.currentSession && state.currentPassage) {
       dispatch({ type: ACTIONS.REGENERATE_CHUNKS });
     }
-  }, [settings.fontSize, settings.lineHeight, settings.columnView, state.currentSession, state.currentPassage]);
+  }, [settings.fontSize, settings.lineHeight, settings.columnView, settings.fontFamily, state.currentSession, state.currentPassage]);
   
   const value = {
     state: { ...state, ...settings }, // Combine reading state with user settings

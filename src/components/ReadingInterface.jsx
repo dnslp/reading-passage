@@ -39,6 +39,15 @@ function ReadingInterface() {
     }
   }, [dispatch, actions]);
 
+  // Scroll to top when starting a reading session
+  useEffect(() => {
+    if (currentPassage && readingAreaRef.current) {
+      readingAreaRef.current.scrollTop = 0;
+      // Also scroll the window to top for better mobile experience
+      window.scrollTo(0, 0);
+    }
+  }, [currentPassage]);
+
   // Auto-scroll functionality
   useEffect(() => {
     if (!autoScroll || !readingAreaRef.current) return;

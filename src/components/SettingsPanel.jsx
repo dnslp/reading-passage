@@ -14,7 +14,6 @@ function SettingsPanel({ isOpen, onClose }) {
     lineHeight,
     fontFamily,
     columnView,
-    contrast,
     scrollSpeed,
     theme,
   } = settings;
@@ -29,11 +28,6 @@ function SettingsPanel({ isOpen, onClose }) {
     { value: 'OpenDyslexic, serif', label: 'OpenDyslexic (Custom)' },
   ];
 
-  const contrastOptions = [
-    { value: 'normal', label: 'Normal' },
-    { value: 'high', label: 'High Contrast' },
-    { value: 'low', label: 'Low Contrast' },
-  ];
 
 const themeOptions = [
   { value: 'light',      label: 'Light' },
@@ -55,7 +49,6 @@ const themeOptions = [
       fontSize: 18,
       lineHeight: 1.6,
       fontFamily: 'Georgia, serif',
-      contrast: 'normal',
       scrollSpeed: 50,
       darkMode: false,
       columnView: false,
@@ -74,6 +67,7 @@ const themeOptions = [
         </div>
 
         <div className="settings-content">
+          {/* Mobile-optimized compact sections */}
           {/* Text Appearance */}
           <div className="settings-section">
             <h3>Text Appearance</h3>
@@ -137,19 +131,6 @@ const themeOptions = [
               <small className="setting-description">Centers text in a readable column width</small>
             </div>
 
-            <div className="setting-group">
-              <label htmlFor="contrast">Contrast</label>
-              <select
-                id="contrast"
-                value={contrast}
-                onChange={e => handleSettingChange('contrast', e.target.value)}
-                className="select"
-              >
-                {contrastOptions.map(({ value, label }) => (
-                  <option key={value} value={value}>{label}</option>
-                ))}
-              </select>
-            </div>
 
             <div className="setting-group">
               <label htmlFor="theme">Theme</label>
@@ -166,30 +147,12 @@ const themeOptions = [
             </div>
           </div>
 
-          {/* Reading Controls */}
-          {/* <div className="settings-section">
-            <h3>Reading Controls</h3>
-            <div className="setting-group">
-              <label htmlFor="scrollSpeed">Auto-scroll Speed: {scrollSpeed} WPM</label>
-              <input
-                id="scrollSpeed"
-                type="range"
-                min="25"
-                max="400"
-                step="25"
-                value={scrollSpeed}
-                onChange={e => handleSettingChange('scrollSpeed', parseInt(e.target.value, 10))}
-                className="slider"
-              />
-              <div className="range-labels"><span>25 WPM</span><span>400 WPM</span></div>
-            </div>
-          </div> */}
 
-          {/* Preview */}
+          {/* Compact Preview */}
           <div className="settings-section">
             <h3>Preview</h3>
             <div
-              className="preview-text"
+              className="preview-text mobile-compact"
               style={{
                 fontSize: `${fontSize}px`,
                 lineHeight,
@@ -198,7 +161,7 @@ const themeOptions = [
                 margin: columnView ? '0 auto' : '0',
               }}
             >
-              The quick brown fox jumps over the lazy dog. This text demonstrates your current font and spacing settings. Adjust above to see changes.
+              Sample text showing your font settings.
             </div>
           </div>
         </div>

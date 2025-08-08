@@ -8,7 +8,6 @@ const defaultSettings = {
   darkMode: false,
   focusMode: false,
   columnView: true,
-  contrast: 'normal',
   scrollSpeed: 50,
   theme: 'light',
   modals: {},
