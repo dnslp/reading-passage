@@ -72,22 +72,21 @@ const tags = Array.from(new Set(['all', ...getUniqueTags()]));
                 </span>
               </div>
               <p className="passage-preview">{passage.text.slice(0, 100)}…</p>
+              {selectedPassageId === passage.id && (
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    startSession();
+                  }} 
+                  className="start-session-btn-inline"
+                >
+                  Start Reading →
+                </button>
+              )}
             </div>
           </li>
         ))}
       </ul>
-
-      {/* Summary & Start Button */}
-      {selectedPassage && (
-        <div className="session-summary">
-          <div className="selected-passage-info">
-            <strong>Selected:</strong> {selectedPassage.title} — {selectedPassage.wordCount} words ({timeEstimate.display})
-          </div>
-          <button onClick={startSession} className="start-session-btn">
-            Start Reading
-          </button>
-        </div>
-      )}
     </div>
   );
 }
